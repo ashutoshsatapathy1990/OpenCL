@@ -1,1 +1,1 @@
-# OpenCL-C
+# OpenCL

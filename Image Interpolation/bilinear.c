@@ -29,9 +29,9 @@ const char *Magnify_kernel =
 "{											        \n" \
 "	//Get the index of the work items				                        \n" \
 "	uint globalId = get_global_id(0);				                        \n" \
-"	float ty = ((float)(width-1)) / ((float)(rewidth -1));				        \n" \
-"	float tx = ((float)(height-1)) / ((float)(reheight -1));			        \n" \
-"	float x = tx * (int)((float)globalId / rewidth);			                \n" \
+"	float ty = ((float)(width-1)) / (rewidth -1);				        	\n" \
+"	float tx = ((float)(height-1)) / (reheight -1);			        		\n" \
+"	float x = tx * (globalId / rewidth);			                		\n" \
 "	float y = ty * (globalId % rewidth);				                        \n" \
 "	int x1 = floor(x);			      		                                \n" \
 "	int x2 = ceil(x);					                                \n" \
@@ -44,7 +44,7 @@ const char *Magnify_kernel =
 "	float rowx1 = ty1 * source[x1 * width + y1] + ty2 * source[x1 * width + y2];		\n" \
 "	float rowx2 = ty1 * source[x2 * width + y1] + ty2 * source[x2 * width + y2];		\n" \
 "	float coly = tx1 * rowx1 + tx2 * rowx2;				   	                \n" \
-"	dst[reheight * (int)((float)globalId / rewidth) + (globalId % rewidth)] = coly;		\n" \
+"	dst[reheight * (globalId / rewidth) + (globalId % rewidth)] = coly;			\n" \
 "}											        \n" \
 "\n";
 

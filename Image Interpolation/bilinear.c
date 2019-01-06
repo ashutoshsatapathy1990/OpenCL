@@ -5,7 +5,7 @@
 #include <conio.h>
 #include <stdlib.h>
 #include <complex.h>
-#ifdef __APLLE__
+#ifdef __APPLE__
 #include <OpenCL\cl.h>
 #else
 #include <CL\cl.h>

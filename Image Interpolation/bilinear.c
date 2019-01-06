@@ -17,35 +17,35 @@ using namespace cv;
 
 // OpenCL Kernel which is run for every work item created
 const char *Magnify_kernel =                                                          
-"#pragma OPENCL EXTENSION cl_khr_fp32 : enable																		                \n"	\
-"#pragma OPENCL EXTENSION cl_khr_printf : enable																	                \n"	\
-"__kernel																											                                    \n"	\
-"void Magnify_kernel (__global int* source,																			                  \n"	\
-"	__global int* dst,																								                              \n"	\
-"	int height,																										                                  \n"	\
-"	int width,																										                                  \n"	\
-"	int reheight,																									                                  \n"	\
-"	int rewidth)																									                                  \n"	\
-"{																													                                      \n"	\
-"	//Get the index of the work items																				                        \n"	\
-"	uint globalId = get_global_id(0);																				                        \n"	\
-"	float ty = ((float)(width-1)) / ((float)(rewidth -1));															            \n"	\
-"	float tx = ((float)(height-1)) / ((float)(reheight -1));														            \n"	\
-"	float x = tx * (int)((float)globalId / rewidth);																                \n"	\
-"	float y = ty * (globalId % rewidth);																			                      \n"	\
-"	int x1 = floor(x);																								                              \n"	\
-"	int x2 = ceil(x);																								                                \n"	\
-"	int y1 = floor(y);																								                              \n"	\
-"	int y2 = ceil(y);																								                                \n"	\
-"	float ty1 = ((y1 == y2)? 1 : fabs(y2 - y));																		                  \n"	\
-"	float ty2 = ((y1 == y2)? 0 : fabs(y1 - y));																		                  \n"	\
-"	float tx1 = ((x1 == x2)? 1 : fabs(x2 - x));																		                  \n"	\
-"	float tx2 = ((x1 == x2)? 0 : fabs(x1 - x));																		                  \n"	\
-"	float rowx1 = ty1 * source[x1 * width + y1] + ty2 * source[x1 * width + y2];									  \n"	\
-"	float rowx2 = ty1 * source[x2 * width + y1] + ty2 * source[x2 * width + y2];									  \n"	\
-"	float coly = tx1 * rowx1 + tx2 * rowx2;																			                    \n"	\
-"	dst[reheight * (int)((float)globalId / rewidth) + (globalId % rewidth)] = coly;									\n"	\
-"}																													                                      \n"	\
+"#pragma OPENCL EXTENSION cl_khr_fp32 : enable							\n" \
+"#pragma OPENCL EXTENSION cl_khr_printf : enable				                \n" \
+"__kernel						 	                                \n" \
+"void Magnify_kernel (__global int* source,					                \n" \
+"	__global int* dst,								        \n" \
+"	int height,									        \n" \
+"	int width,										\n" \
+"	int reheight,							                        \n" \
+"	int rewidth)								                \n" \
+"{											        \n" \
+"	//Get the index of the work items				                        \n" \
+"	uint globalId = get_global_id(0);				                        \n" \
+"	float ty = ((float)(width-1)) / ((float)(rewidth -1));				        \n" \
+"	float tx = ((float)(height-1)) / ((float)(reheight -1));			        \n" \
+"	float x = tx * (int)((float)globalId / rewidth);			                \n" \
+"	float y = ty * (globalId % rewidth);				                        \n" \
+"	int x1 = floor(x);			      		                                \n" \
+"	int x2 = ceil(x);					                                \n" \
+"	int y1 = floor(y);					                                \n" \
+"	int y2 = ceil(y);					                                \n" \
+"	float ty1 = ((y1 == y2)? 1 : fabs(y2 - y));				                \n" \
+"	float ty2 = ((y1 == y2)? 0 : fabs(y1 - y));				                \n" \
+"	float tx1 = ((x1 == x2)? 1 : fabs(x2 - x));				                \n" \
+"	float tx2 = ((x1 == x2)? 0 : fabs(x1 - x));			 	                \n" \
+"	float rowx1 = ty1 * source[x1 * width + y1] + ty2 * source[x1 * width + y2];		\n" \
+"	float rowx2 = ty1 * source[x2 * width + y1] + ty2 * source[x2 * width + y2];		\n" \
+"	float coly = tx1 * rowx1 + tx2 * rowx2;				   	                \n" \
+"	dst[reheight * (int)((float)globalId / rewidth) + (globalId % rewidth)] = coly;		\n" \
+"}											        \n" \
 "\n";
 
 //Main Program
